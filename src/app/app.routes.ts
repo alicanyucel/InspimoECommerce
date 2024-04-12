@@ -26,11 +26,12 @@ export const routes: Routes = [
         ]
     },
     {
+        path:"orders",
+        component:OrdersComponent
+    },
+    {
         path: "**",
         component: NotFoundComponent
     },
-    {
-        path:"orders",
-        component:OrdersComponent
-    }
+    
 ];
