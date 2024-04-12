@@ -3,9 +3,22 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ECommerce": {
+    "e-commerce": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "skipTests": true
+        },
+        "@schematics/angular:directive": {
+          "skipTests": true
+        },
+        "@schematics/angular:service": {
+          "skipTests": true
+        },
+        "@schematics/angular:pipe": {
+          "skipTests": true
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -13,7 +26,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/ecommerce",
+            "outputPath": "dist/e-commerce",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -25,14 +38,12 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
-            "scripts": [],
-            "server": "src/main.server.ts",
-            "prerender": true,
-            "ssr": {
-              "entry": "server.ts"
-            }
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -62,10 +73,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ECommerce:build:production"
+              "buildTarget": "e-commerce:build:production"
             },
             "development": {
-              "buildTarget": "ECommerce:build:development"
+              "buildTarget": "e-commerce:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -73,7 +84,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "ECommerce:build"
+            "buildTarget": "e-commerce:build"
           }
         },
         "test": {
@@ -96,8 +107,5 @@
         }
       }
     }
-  },
-  "cli": {
-    "analytics": "bac81429-6745-4f72-ba5a-51189f593826"
   }
 }
