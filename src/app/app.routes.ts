@@ -4,6 +4,7 @@ import { HomeComponent } from './components/home/home.component';
 import { ShoppingCartsComponent } from './components/shopping-carts/shopping-carts.component';
 import { LoginComponent } from './components/login/login.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { OrdersComponent } from './components/orders/orders.component';
 
 export const routes: Routes = [
     {
@@ -27,5 +28,9 @@ export const routes: Routes = [
     {
         path: "**",
         component: NotFoundComponent
+    },
+    {
+        path:"orders",
+        component:OrdersComponent
     }
 ];
