@@ -21,7 +21,7 @@ export class ShoppingCartService {
   }
 
   getAll(){
-    this.http.get<ShoppingCartModel[]>("http://localhost:5000/shoppingCarts").subscribe({
+    this.http.get<ShoppingCartModel[]>("http://localhost:3000/shoppingCarts").subscribe({
       next: (res)=> {
         this.shoppingCarts = res;
         this.calculateTotal();
