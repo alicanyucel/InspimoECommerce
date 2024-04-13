@@ -14,7 +14,7 @@ export class ProductService {
   }
 
   getAll(){
-    this.http.get<ProductModel[]>("http://localhost:5000/products").subscribe({
+    this.http.get<ProductModel[]>("http://localhost:3000/products").subscribe({
       next: (res)=> {
         this.products = res;
       },
