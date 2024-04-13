@@ -64,6 +64,7 @@ export class HomeComponent {
     // this._http.post("http://localhost:3000/shoppingCarts", productModel)
     const model = this._cart.shoppingCarts.find(p => p.id === product.id);
     if (model === undefined) {
+      // eğer sepette ekelmek istediğim ürün yoksa sepete ekle
       const cart: ShoppingCartModel = {
         productId: productModel.id,
         categoryId: productModel.categoryId,
