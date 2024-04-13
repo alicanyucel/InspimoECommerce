@@ -12,10 +12,14 @@ export class OrderService {
   constructor(private _http:HttpClient) {
     this.getAll()
    }
-  getAll(){
+  getAll(callback?:()=>void){
     this._http.get<OrderModel[]>("http://localhost:3000/orders").subscribe({
       next:(res)=>{
-        this.orders=res
+        this.orders=res;
+        if(callback!=undefined)
+          {
+            callback()
+          }
       },
       error:(err:HttpErrorResponse)=>{
         console.log(err);

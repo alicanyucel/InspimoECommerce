@@ -109,10 +109,12 @@ export class ShoppingCartsComponent implements OnInit {
           orderNumber: ""
         };
         order.orderNumber = order.orderNumberPrefix + order.orderNumberSuffix.toString().padStart(10, "0");
-
-      }
       this._http.post("http://localhost:3000/orders", order).subscribe();
       this._http.delete("http://localhost:3000/shoppingCarts/" + data.id).subscribe();
     }
     setTimeout(() => {
+      this._cart.getAll();
+    }, 300);
+    }
+  }
 }
