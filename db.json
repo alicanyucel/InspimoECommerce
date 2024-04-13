@@ -7,7 +7,7 @@
       "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
       "price": 12650,
       "discountedPrice": 11999,
-      "stock": -2,
+      "stock": 10,
       "kdvRate": 10,
       "categoryId": "1",
       "category": {
@@ -47,57 +47,5 @@
       "name": "Kıyafet"
     }
   ],
-  "shoppingCarts": [
-    {
-      "id": "74fe",
-      "productId": "1",
-      "categoryId": "1",
-      "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-      "discountedPrice": 11999,
-      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfFFXV4zCJybOFvocqAKKkko37SsPbl9F66Q&usqp=CA",
-      "kdvRate": 10,
-      "name": "Grundig Pc 2560 B1",
-      "price": 12650,
-      "quantity": 4,
-      "stock": 10,
-      "category": {
-        "id": "1",
-        "name": "Elektronik"
-      }
-    },
-    {
-      "id": "ae74",
-      "productId": "1",
-      "categoryId": "1",
-      "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-      "discountedPrice": 11999,
-      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfFFXV4zCJybOFvocqAKKkko37SsPbl9F66Q&usqp=CA",
-      "kdvRate": 10,
-      "name": "Grundig Pc 2560 B1",
-      "price": 12650,
-      "quantity": 4,
-      "stock": 6,
-      "category": {
-        "id": "1",
-        "name": "Elektronik"
-      }
-    },
-    {
-      "id": "e569",
-      "productId": "1",
-      "categoryId": "1",
-      "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-      "discountedPrice": 11999,
-      "imageUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfFFXV4zCJybOFvocqAKKkko37SsPbl9F66Q&usqp=CA",
-      "kdvRate": 10,
-      "name": "Grundig Pc 2560 B1",
-      "price": 12650,
-      "quantity": 4,
-      "stock": 2,
-      "category": {
-        "id": "1",
-        "name": "Elektronik"
-      }
-    }
-  ]
+  "shoppingCarts": []
 }
