@@ -55,7 +55,7 @@ export class ShoppingCartsComponent implements OnInit {
   }
 
   increment(cart: ShoppingCartModel){
-    const product = this._product.products.find(p=> p.id == cart.id);
+    const product = this._product.products.find(p=> p.id == cart.productId);
     if(product !== undefined){
       if(product.stock > 0){
         cart.quantity++;
