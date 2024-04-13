@@ -9,6 +9,7 @@ import { SearchComponent } from '../../common/components/search/search.component
 import { TrCurrencyPipe } from 'tr-currency';
 import { ShoppingCartService } from '../../services/shopping-cart.service';
 import { ProductService } from '../../services/product.service';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
@@ -26,11 +27,21 @@ export class HomeComponent {
 
   constructor(
     private cart: ShoppingCartService,
-    public _product: ProductService
+    public _product: ProductService,
+    private _http:HttpClient
   ) {
-    this.seedData();
+    this.getAllCategories();
    }
-
+   getAllCategories() {
+    this._http.get<CategoryModel[]>("http://localhost:3000/categories").subscribe({
+      next:(res)=>{
+        this.categories=res;
+      },
+      error:(err:HttpErrorResponse)=>{
+        console.log(err);
+      }
+    })
+  }
   selectCategory(id: string = "") {
     this.selectedCategoryId = id;
   }
@@ -60,20 +71,5 @@ export class HomeComponent {
     product.stock -= product.quantity;
   }
 
-  seedData() {
-    this.categories = [
-      {
-        id: "1",
-        name: "Elektronik"
-      },
-      {
-        id: "2",
-        name: "Meyve & Sebze"
-      },
-      {
-        id: "3",
-        name: "Kıyafet"
-      }
-    ]
-  }
+  
 }
