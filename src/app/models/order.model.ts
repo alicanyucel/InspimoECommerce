@@ -1,7 +1,7 @@
 import { KDVRateType } from "./product.model";
 
 export class OrderModel{
-    id:string = "";
+    id:string | undefined= "";
     orderNumber: string = "";
     orderNumberPrefix: string = "";
     orderNumberSuffix: number = 0;

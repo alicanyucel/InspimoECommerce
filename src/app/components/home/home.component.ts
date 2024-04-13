@@ -77,7 +77,6 @@ export class HomeComponent {
         name: productModel.name,
         price: productModel.price,
         quantity: productModel.quantity,
-        stock: productModel.stock,
         category: productModel.category,
         id: undefined
       }

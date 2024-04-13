@@ -6,15 +6,14 @@
       "name": "Grundig Pc 2560 B1",
       "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
       "price": 12650,
-      "discountedPrice": 11999,
-      "stock": 10,
+      "discountedPrice":      "s      "stock": 10,
       "kdvRate": 10,
       "categoryId": "1",
       "category": {
         "id": "1",
         "name": "Elektronik"
       },
-      "quantity": 4
+      "quantity": 9
     },
     {
       "id": "2",
@@ -42,6 +41,8 @@
       "id": "2",
       "name": "Meyve & Sebze"
     },
+    
+    
     {
       "id": "3",
       "name": "Kıyafet"

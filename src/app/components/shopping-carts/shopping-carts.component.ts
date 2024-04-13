@@ -25,77 +25,77 @@ export class ShoppingCartsComponent implements OnInit {
     private _http: HttpClient
   ) { }
 
-  ngOnInit(): void {}  
+  ngOnInit(): void { }
 
-  removeByIndex(index:number){
+  removeByIndex(index: number) {
     const cart = this._cart.shoppingCarts[index];
-    const product = this._product.products.find(p=> p.id == cart.productId);
+    const product = this._product.products.find(p => p.id == cart.productId);
 
-    if(product !== undefined){
+    if (product !== undefined) {
       product.stock += cart.quantity;
 
       this._http.put("http://localhost:3000/products/" + product.id, product).subscribe({
-        next: ()=> {
+        next: () => {
           this._product.getAll();
         },
-        error: (err: HttpErrorResponse)=> {
-          console.log(err);          
+        error: (err: HttpErrorResponse) => {
+          console.log(err);
         }
       })
-    }    
+    }
 
     this._http.delete("http://localhost:3000/shoppingCarts/" + cart.id).subscribe({
-      next: ()=> {
-        this._cart.getAll();              
+      next: () => {
+        this._cart.getAll();
       },
-      error: (err: HttpErrorResponse)=> {
-        console.log(err);        
+      error: (err: HttpErrorResponse) => {
+        console.log(err);
       }
-    });    
+    });
   }
 
-  increment(cart: ShoppingCartModel){
-    const product = this._product.products.find(p=> p.id == cart.productId);
-    if(product !== undefined){
-      if(product.stock > 0){
+  increment(cart: ShoppingCartModel) {
+    const product = this._product.products.find(p => p.id == cart.productId);
+    if (product !== undefined) {
+      if (product.stock > 0) {
         cart.quantity++;
-        this._http.put("http://localhost:3000/shoppingCarts/" + cart.id,cart).subscribe(()=>this._cart.getAll());
+        this._http.put("http://localhost:3000/shoppingCarts/" + cart.id, cart).subscribe(() => this._cart.getAll());
         product.stock--;
-        this._http.put("http://localhost:3000/products/" +product.id,product).subscribe(()=>this._product.getAll());
+        this._http.put("http://localhost:3000/products/" + product.id, product).subscribe(() => this._product.getAll());
       }
     }
   }
 
-  decrement(cart: ShoppingCartModel, index:number){
-    if(cart.quantity === 1){
+  decrement(cart: ShoppingCartModel, index: number) {
+    if (cart.quantity === 1) {
       this.removeByIndex(index);
-    }else{
-      const product = this._product.products.find(p=> p.id == cart.id);
-      if(product !== undefined){
+    } else {
+      const product = this._product.products.find(p => p.id == cart.id);
+      if (product !== undefined) {
         cart.quantity--;
-        this._http.put("http://localhost:3000/shoppingCarts/" + cart.id,cart).subscribe(()=>this._cart.getAll());
+        this._http.put("http://localhost:3000/shoppingCarts/" + cart.id, cart).subscribe(() => this._cart.getAll());
         product.stock++;
-        this._http.put("http://localhost:3000/products/" + product.id,product).subscribe(()=>this._product.getAll());
+        this._http.put("http://localhost:3000/products/" + product.id, product).subscribe(() => this._product.getAll());
       }
     }
-   
+
   }
 
-  pay(form:NgForm){
-    if(form.valid){
-      for(const data of this._cart.shoppingCarts){
+  pay(form: NgForm) {
+    if (form.valid) {
+      for (const data of this._cart.shoppingCarts) {
         const amount = data.quantity * data.discountedPrice;
         const kdv = amount - (amount / ((data.kdvRate / 100) + 1))
 
         let lastOrderSuffix = 0;
-        if(this._order.orders.length > 0){
+        if (this._order.orders.length > 0) {
           lastOrderSuffix = this._order.orders[this._order.orders.length - 1].orderNumberSuffix;
-        } 
+        }
 
         const order: OrderModel = {
           id: "123",
           date: new Date().toString(),
-          kdvRate: data.kdvRate,          
+          kdvRate: data.kdvRate,
           price: data.price,
           productName: data.name,
           productDescription: data.description,
@@ -108,20 +108,11 @@ export class ShoppingCartsComponent implements OnInit {
           orderNumberSuffix: lastOrderSuffix + 1,
           orderNumber: ""
         };
+        order.orderNumber = order.orderNumberPrefix + order.orderNumberSuffix.toString().padStart(10, "0");
 
-        // let orderNumberSuffixString = order.orderNumberSuffix.toString(); //2
-        // let i = order.orderNumberSuffix.toString().length; //1
-
-        // for (i; i < 10; i++) {
-        //   orderNumberSuffixString = "0" + orderNumberSuffixString         
-        // }        
-
-        order.orderNumber = order.orderNumberPrefix + order.orderNumberSuffix.toString().padStart(10,"0");
-
-        this._order.orders.push(order);
       }
-
-      this._cart.shoppingCarts = [];
+      this._http.post("http://localhost:3000/orders", order).subscribe();
+      this._http.delete("http://localhost:3000/shoppingCarts/" + data.id).subscribe();
     }
-  }
+    setTimeout(() => {
 }
