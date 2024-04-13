@@ -11,7 +11,7 @@ import { ShoppingCartService } from '../../services/shopping-cart.service';
 import { ProductService } from '../../services/product.service';
 
 @Component({
-  selector: 'app-home', //npm install tr-currency
+  selector: 'app-home',
   standalone: true,
   imports: [FormsModule, CategoryPipe, CommonModule, ProductPipe, SearchComponent, TrCurrencyPipe],
   templateUrl: './home.component.html',
@@ -28,9 +28,7 @@ export class HomeComponent {
     private cart: ShoppingCartService,
     public _product: ProductService
   ) {
-    setTimeout(() => {
-      this.seedData();
-    }, 3000);
+    this.seedData();
    }
 
   selectCategory(id: string = "") {

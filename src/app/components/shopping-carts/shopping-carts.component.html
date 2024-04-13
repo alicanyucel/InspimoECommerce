@@ -1,4 +1,5 @@
-<title>Shopping Cards</title>
+<title>TS | Shopping Carts</title>
+
 <nav aria-label="breadcrumb" class="d-flex justify-content-between align-items-center mt-3">
     <h3>Shopping Cart Page</h3>
     <ol class="breadcrumb">
@@ -7,7 +8,7 @@
     </ol>
 </nav>
 
-@if(cart.shoppingCarts.length > 0){
+@if(_cart.shoppingCarts.length > 0){
     <div class="row mt-2">
         <div class="col-xl-9 col-lg-9 col-md-9 col-sm-9 col-12">
             <div class="card">
@@ -28,7 +29,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @for(data of cart.shoppingCarts; track data){
+                            @for(data of _cart.shoppingCarts; track data){
                                 <tr>
                                     <td>{{$index + 1}}</td>
                                     <td>
@@ -93,27 +94,27 @@
                     </table>
                 </div>
                 <div class="card-body">
-                    <form>
+                    <form #payForm="ngForm" (ngSubmit)="pay(payForm)" autocomplete="off">
                         <div class="form-group">
                             <label>Card Owner</label>
-                            <input type="text" class="form-control">
+                            <input type="text" name="cardOwner" ngModel class="form-control">
                         </div>
                         <div class="form-group mt-1">
                             <label>Card Number</label>
-                            <input type="text" class="form-control">
+                            <input type="text" name="cardNumber" ngModel class="form-control">
                         </div>
                         <div class="row form-group mt-1">
                             <div class="col-6">
                                 <label>Expiration Date</label>
-                                <input type="text" class="form-control">
+                                <input type="text" name="exprationDate" ngModel class="form-control">
                             </div>
                             <div class="col-6">
                                 <label>CVV</label>
-                                <input type="number" class="form-control">
+                                <input type="number" name="CVV" ngModel class="form-control">
                             </div>
                         </div>
                         <div class="form-group mt-1">
-                            <button class="btn btn-danger w-100">
+                            <button type="submit" class="btn btn-danger w-100">
                                 <i class="fa-solid fa-money-check"></i>
                                 Pay
                             </button>

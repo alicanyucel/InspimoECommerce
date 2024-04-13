@@ -22,16 +22,15 @@ export const routes: Routes = [
             {
                 path: "shopping-carts",
                 component: ShoppingCartsComponent
+            },
+            {
+                path: "orders",
+                component: OrdersComponent
             }
         ]
     },
     {
-        path:"orders",
-        component:OrdersComponent
-    },
-    {
         path: "**",
         component: NotFoundComponent
-    },
-    
+    }
 ];
