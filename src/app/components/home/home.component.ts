@@ -82,7 +82,7 @@ export class HomeComponent {
         id: undefined
       }
 
-      this._http.post("http://localhost:5000/shoppingCarts/", cart).subscribe({
+      this._http.post("http://localhost:3000/shoppingCarts/", cart).subscribe({
         next: ()=> {
           this._cart.getAll();
         },
@@ -94,7 +94,7 @@ export class HomeComponent {
       //eğer sepette ürün varsa adedini güncelle ve API isteği ile kayıttaki bilgisini değiştir
       model.quantity += productModel.quantity;
 
-      this._http.put("http://localhost:5000/shoppingCarts/" + model.id, model).subscribe({
+      this._http.put("http://localhost:3000/shoppingCarts/" + model.id, model).subscribe({
         next: ()=> {
           this._cart.getAll();
         },
@@ -105,7 +105,7 @@ export class HomeComponent {
     }
 
     product.stock -= product.quantity;
-    this._http.put("http://localhost:5000/products/" + product.id, product).subscribe({
+    this._http.put("http://localhost:3000/products/" + product.id, product).subscribe({
         next: ()=> {
           this._product.getAll();
         },
