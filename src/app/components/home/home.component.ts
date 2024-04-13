@@ -35,7 +35,7 @@ export class HomeComponent {
   }
 
   getAllCategories() {
-    this._http.get<CategoryModel[]>("http://localhost:5000/categories").subscribe({
+    this._http.get<CategoryModel[]>("http://localhost:3000/categories").subscribe({
       next: (res)=> {
         this.categories = res;
       },
