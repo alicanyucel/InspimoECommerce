@@ -27,7 +27,7 @@ export class HomeComponent {
   selectedCategoryId: string = "";
 
   constructor(
-    private cart: ShoppingCartService,
+    private _cart: ShoppingCartService,
     public _product: ProductService,
     private _http: HttpClient
   ) {
@@ -61,33 +61,51 @@ export class HomeComponent {
 
   addShoppingCart(product: ProductModel) {
     const productModel = { ...product };
-   // this._http.post("http://localhost:3000/shoppingCarts", productModel)
-    const model = this.cart.shoppingCarts.find(p => p.id === product.id);
-    if(model===undefined){
-     const cart:ShoppingCartModel={
-      productId:productModel.id,
-      categoryId:productModel.categoryId,
-      description:productModel.description,
-      discountedPrice:productModel.discountedPrice,
-      imageUrl:productModel.imageUrl,
-      kdvRate:productModel.kdvRate,
-      name:productModel.name,
-      price:productModel.price,
-      quantity:productModel.quantity,
-      stock:productModel.stock,
-      category:productModel.category,
-      id:""
-     }
-     this._http.post("http://localhost:3000/shoppingCarts",cart).subscribe({
-      next:()=>{
-        this.cart.getAll()
+    // this._http.post("http://localhost:3000/shoppingCarts", productModel)
+    const model = this._cart.shoppingCarts.find(p => p.id === product.id);
+    if (model === undefined) {
+      const cart: ShoppingCartModel = {
+        productId: productModel.id,
+        categoryId: productModel.categoryId,
+        description: productModel.description,
+        discountedPrice: productModel.discountedPrice,
+        imageUrl: productModel.imageUrl,
+        kdvRate: productModel.kdvRate,
+        name: productModel.name,
+        price: productModel.price,
+        quantity: productModel.quantity,
+        stock: productModel.stock,
+        category: productModel.category,
+        id: undefined
       }
-     })
+      this._http.post("http://localhost:3000/shoppingCarts", cart).subscribe({
+        next: () => {
+          this._cart.getAll();
+        },
+        error: (err: HttpErrorResponse) => {
+          console.log(err);
+        }
+      });
     }
-  
-
+    else {
+      model.quantity += productModel.quantity;
+      this._http.put("http://localhost:3000/shoppingCarts" + model.id, model).subscribe({
+        next: () => {
+          this._cart.getAll();
+        },
+        error: (err: HttpErrorResponse) => {
+          console.log(err);
+        }
+      });
+    }
     product.stock -= product.quantity;
+    this._http.put("http://localhost:3000/products/" + product.id, product).subscribe({
+      next: () => {
+        this._product.getAll();
+      },
+      error: (err: HttpErrorResponse) => {
+        console.log(err);
+      }
+    });
   }
-
-
 }
