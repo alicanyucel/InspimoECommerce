@@ -59,7 +59,9 @@ export class ShoppingCartsComponent implements OnInit {
     if(product !== undefined){
       if(product.stock > 0){
         cart.quantity++;
+        this._http.put("http://localhost:3000/shoppingCarts/" + cart.id,cart).subscribe(()=>this._cart.getAll());
         product.stock--;
+        this._http.put("http://localhost:3000/products/" +product.id,product).subscribe(()=>this._product.getAll());
       }
     }
   }
@@ -71,7 +73,9 @@ export class ShoppingCartsComponent implements OnInit {
       const product = this._product.products.find(p=> p.id == cart.id);
       if(product !== undefined){
         cart.quantity--;
+        this._http.put("http://localhost:3000/shoppingCarts/" + cart.id,cart).subscribe(()=>this._cart.getAll());
         product.stock++;
+        this._http.put("http://localhost:3000/products/" + product.id,product).subscribe(()=>this._product.getAll());
       }
     }
    
