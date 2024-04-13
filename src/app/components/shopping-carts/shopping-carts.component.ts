@@ -34,7 +34,7 @@ export class ShoppingCartsComponent implements OnInit {
     if(product !== undefined){
       product.stock += cart.quantity;
 
-      this._http.put("http://localhost:5000/products/" + product.id, product).subscribe({
+      this._http.put("http://localhost:3000/products/" + product.id, product).subscribe({
         next: ()=> {
           this._product.getAll();
         },
@@ -44,7 +44,7 @@ export class ShoppingCartsComponent implements OnInit {
       })
     }    
 
-    this._http.delete("http://localhost:5000/shoppingCarts/" + cart.id).subscribe({
+    this._http.delete("http://localhost:3000/shoppingCarts/" + cart.id).subscribe({
       next: ()=> {
         this._cart.getAll();              
       },
