@@ -10,6 +10,7 @@ import { TrCurrencyPipe } from 'tr-currency';
 import { ShoppingCartService } from '../../services/shopping-cart.service';
 import { ProductService } from '../../services/product.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { ShoppingCartModel } from '../../models/shopping-cart.model';
 
 @Component({
   selector: 'app-home',
@@ -20,7 +21,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 })
 export class HomeComponent {
   categories: CategoryModel[] = [];
-  numbers: number[] = [1,2,3,4]
+  numbers: number[] = [1, 2, 3, 4]
   categorySearch: string = "";
   productSearch: string = "";
   selectedCategoryId: string = "";
@@ -28,16 +29,16 @@ export class HomeComponent {
   constructor(
     private cart: ShoppingCartService,
     public _product: ProductService,
-    private _http:HttpClient
+    private _http: HttpClient
   ) {
     this.getAllCategories();
-   }
-   getAllCategories() {
+  }
+  getAllCategories() {
     this._http.get<CategoryModel[]>("http://localhost:3000/categories").subscribe({
-      next:(res)=>{
-        this.categories=res;
+      next: (res) => {
+        this.categories = res;
       },
-      error:(err:HttpErrorResponse)=>{
+      error: (err: HttpErrorResponse) => {
         console.log(err);
       }
     })
@@ -60,16 +61,33 @@ export class HomeComponent {
 
   addShoppingCart(product: ProductModel) {
     const productModel = { ...product };
-
+   // this._http.post("http://localhost:3000/shoppingCarts", productModel)
     const model = this.cart.shoppingCarts.find(p => p.id === product.id);
-    if (model === undefined) {
-      this.cart.shoppingCarts.push(productModel);
-    } else {
-      model.quantity += productModel.quantity;
+    if(model===undefined){
+     const cart:ShoppingCartModel={
+      productId:productModel.id,
+      categoryId:productModel.categoryId,
+      description:productModel.description,
+      discountedPrice:productModel.discountedPrice,
+      imageUrl:productModel.imageUrl,
+      kdvRate:productModel.kdvRate,
+      name:productModel.name,
+      price:productModel.price,
+      quantity:productModel.quantity,
+      stock:productModel.stock,
+      category:productModel.category,
+      id:""
+     }
+     this._http.post("http://localhost:3000/shoppingCarts",cart).subscribe({
+      next:()=>{
+        this.cart.getAll()
+      }
+     })
     }
+  
 
     product.stock -= product.quantity;
   }
 
-  
+
 }

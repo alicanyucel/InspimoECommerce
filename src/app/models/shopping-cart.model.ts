@@ -3,6 +3,7 @@ import { KDVRateType } from "./product.model";
 
 export class ShoppingCartModel{
     id: string = "";
+    productId:string="";
     imageUrl: string = "";
     name: string = "";
     description: string = "";
