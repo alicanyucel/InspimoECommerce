@@ -7,6 +7,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { ShoppingCartModel } from '../../models/shopping-cart.model';
 import { OrderModel } from '../../models/order.model';
 import { OrderService } from '../../services/order.service';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-shopping-carts',
@@ -16,56 +17,41 @@ import { OrderService } from '../../services/order.service';
   styleUrl: './shopping-carts.component.css'
 })
 export class ShoppingCartsComponent implements OnInit {
-  totalAmount: number = 0;
-  totalKDV1: number = 0;
-  totalKDV10: number = 0;
-  totalKDV20: number = 0;
-  total: number = 0;
 
   constructor(
     public _cart: ShoppingCartService,
     private _product: ProductService,
-    private _order: OrderService
+    private _order: OrderService,
+    private _http: HttpClient
   ) { }
 
-  ngOnInit(): void {
-    this.calculateTotal();
-  }
-
-  calculateTotal() {
-    this.total = 0;
-    this.totalAmount = 0;
-    this.totalKDV1 = 0;
-    this.totalKDV10 = 0;
-    this.totalKDV20 = 0;
-
-    for (const data of this._cart.shoppingCarts) {
-      const amount = data.quantity * data.discountedPrice;
-      const kdv = amount - (amount / ((data.kdvRate / 100) + 1))
-
-      this.totalAmount += amount - kdv;
-      if (data.kdvRate === 1) {
-        this.totalKDV1 += kdv;
-      } else if (data.kdvRate === 10) {
-        this.totalKDV10 += kdv;
-      } else if (data.kdvRate === 20) {
-        this.totalKDV20 += kdv;
-      }
-
-      this.total += amount;
-    }
-  }
+  ngOnInit(): void {}  
 
   removeByIndex(index:number){
     const cart = this._cart.shoppingCarts[index];
+    const product = this._product.products.find(p=> p.id == cart.productId);
 
-    const data = this._product.products.find(p=> p.id == cart.id);
-    if(data !== undefined){
-      data.stock += cart.quantity;
+    if(product !== undefined){
+      product.stock += cart.quantity;
+
+      this._http.put("http://localhost:5000/products/" + product.id, product).subscribe({
+        next: ()=> {
+          this._product.getAll();
+        },
+        error: (err: HttpErrorResponse)=> {
+          console.log(err);          
+        }
+      })
     }    
 
-    this._cart.shoppingCarts.splice(index,1);
-    this.calculateTotal();
+    this._http.delete("http://localhost:5000/shoppingCarts/" + cart.id).subscribe({
+      next: ()=> {
+        this._cart.getAll();              
+      },
+      error: (err: HttpErrorResponse)=> {
+        console.log(err);        
+      }
+    });    
   }
 
   increment(cart: ShoppingCartModel){
@@ -74,7 +60,6 @@ export class ShoppingCartsComponent implements OnInit {
       if(product.stock > 0){
         cart.quantity++;
         product.stock--;
-        this.calculateTotal();
       }
     }
   }
@@ -87,7 +72,6 @@ export class ShoppingCartsComponent implements OnInit {
       if(product !== undefined){
         cart.quantity--;
         product.stock++;
-        this.calculateTotal();
       }
     }
    

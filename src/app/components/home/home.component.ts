@@ -21,7 +21,7 @@ import { ShoppingCartModel } from '../../models/shopping-cart.model';
 })
 export class HomeComponent {
   categories: CategoryModel[] = [];
-  numbers: number[] = [1, 2, 3, 4]
+  numbers: number[] = [1,2,3,4]
   categorySearch: string = "";
   productSearch: string = "";
   selectedCategoryId: string = "";
@@ -33,16 +33,18 @@ export class HomeComponent {
   ) {
     this.getAllCategories();
   }
+
   getAllCategories() {
-    this._http.get<CategoryModel[]>("http://localhost:3000/categories").subscribe({
-      next: (res) => {
+    this._http.get<CategoryModel[]>("http://localhost:5000/categories").subscribe({
+      next: (res)=> {
         this.categories = res;
       },
       error: (err: HttpErrorResponse) => {
-        console.log(err);
+        console.log(err);        
       }
     })
   }
+
   selectCategory(id: string = "") {
     this.selectedCategoryId = id;
   }
@@ -60,16 +62,16 @@ export class HomeComponent {
   }
 
   addShoppingCart(product: ProductModel) {
-    const productModel = { ...product };
-    // this._http.post("http://localhost:3000/shoppingCarts", productModel)
-    const model = this._cart.shoppingCarts.find(p => p.id === product.id);
+    const productModel = { ...product };  
+
+    const model = this._cart.shoppingCarts.find(p => p.productId === product.id);
     if (model === undefined) {
-      // eğer sepette ekelmek istediğim ürün yoksa sepete ekle
-      const cart: ShoppingCartModel = {
+      //eğer sepette eklemek istediğim ürün yoksa ürünü sepete ekle.
+      const cart:ShoppingCartModel = {
         productId: productModel.id,
         categoryId: productModel.categoryId,
         description: productModel.description,
-        discountedPrice: productModel.discountedPrice,
+        discountedPrice: product.discountedPrice,
         imageUrl: productModel.imageUrl,
         kdvRate: productModel.kdvRate,
         name: productModel.name,
@@ -79,34 +81,37 @@ export class HomeComponent {
         category: productModel.category,
         id: undefined
       }
-      this._http.post("http://localhost:3000/shoppingCarts", cart).subscribe({
-        next: () => {
+
+      this._http.post("http://localhost:5000/shoppingCarts/", cart).subscribe({
+        next: ()=> {
           this._cart.getAll();
         },
-        error: (err: HttpErrorResponse) => {
-          console.log(err);
+        error: (err: HttpErrorResponse)=> {
+          console.log(err);          
         }
       });
-    }
-    else {
+    } else {
+      //eğer sepette ürün varsa adedini güncelle ve API isteği ile kayıttaki bilgisini değiştir
       model.quantity += productModel.quantity;
-      this._http.put("http://localhost:3000/shoppingCarts" + model.id, model).subscribe({
-        next: () => {
+
+      this._http.put("http://localhost:5000/shoppingCarts/" + model.id, model).subscribe({
+        next: ()=> {
           this._cart.getAll();
         },
-        error: (err: HttpErrorResponse) => {
-          console.log(err);
+        error: (err: HttpErrorResponse)=> {
+          console.log(err);          
         }
       });
     }
+
     product.stock -= product.quantity;
-    this._http.put("http://localhost:3000/products/" + product.id, product).subscribe({
-      next: () => {
-        this._product.getAll();
-      },
-      error: (err: HttpErrorResponse) => {
-        console.log(err);
-      }
-    });
+    this._http.put("http://localhost:5000/products/" + product.id, product).subscribe({
+        next: ()=> {
+          this._product.getAll();
+        },
+        error: (err: HttpErrorResponse)=> {
+          console.log(err);          
+        }
+      });
   }
 }
